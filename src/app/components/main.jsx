@@ -1,12 +1,19 @@
-/** In this file, we create a React component which incorporates components provided by material-ui */
-
-const React = require('react');
+import React from 'react';
 const RaisedButton = require('material-ui/lib/raised-button');
-const Card = require('material-ui/lib/card/card');
-const CardHeader = require('material-ui/lib/card/card-header');
+const LeftNav = require('material-ui/lib/left-nav');
+const MenuItem = require('material-ui/lib/menus/menu-item');
+const MenuDivider = require('material-ui/lib/menus/menu-divider');
+import ArtistIcon from 'material-ui/lib/svg-icons/social/person';
+import AlbumIcon from 'material-ui/lib/svg-icons/device/wallpaper';
+import TrackIcon from 'material-ui/lib/svg-icons/av/queue-music';
+const ArrowDropRight = require('material-ui/lib/svg-icons/av/play-arrow');
+import IconButton from 'material-ui/lib/icon-button'
 const ThemeManager = require('material-ui/lib/styles/theme-manager');
 const LightRawTheme = require('material-ui/lib/styles/raw-themes/light-raw-theme');
 const Colors = require('material-ui/lib/styles/colors');
+
+import TracksModule from './tracks'
+import AlbumsModule from './albums'
 
 const Main = React.createClass({
 
@@ -17,8 +24,6 @@ const Main = React.createClass({
   getInitialState () {
     return {
       muiTheme: ThemeManager.getMuiTheme(LightRawTheme),
-      tracks: [],
-      loaded: false,
     };
   },
 
@@ -36,67 +41,44 @@ const Main = React.createClass({
     this.setState({muiTheme: newMuiTheme});
   },
 
-  componentDidMount() {
-    this.fetchDate();
-  },
-
-  fetchDate() {
-      let url = 'http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=fakelbst&api_key=4dff88a0423651b3570253b10b745b2c&format=json&limit=50&extended=1&page=1';
-      fetch(url).then((response) => {
-        return response.json()
-      }).then((json) => {
-        console.log('parsed json', json)
-        this.setState({
-          tracks: json.recenttracks.track,
-          loaded: true,
-        });
-      }).catch((ex) => {
-        console.log('parsing failed', ex)
-      })
-  },
-
-  renderLoadingView() {
-    return (
-        <div></div>
-    )
-  },
-
   render() {
 
-    if (!this.state.loaded) {
-      return this.renderLoadingView();
+    let content = <TracksModule />;
+    if(this.state.method === 'tracks'){
+      content = <TracksModule />;
+    }
+    else if(this.state.method === 'albums'){
+      content = <AlbumsModule />
     }
 
-    let containerStyle = {
-      textAlign: 'center',
-      paddingTop: '200px',
-    };
-
-    let standardActions = [
-      { text: 'Okay' },
-    ];
-
-    let datas = this.state.tracks;
-    console.log(datas);
     return (
       <div>
-        {datas.map((d) => {
-          return <Card>
-            <CardHeader
-              title={d.name}
-              subtitle={d.artist.name}
-              avatar={d.image[2]['#text']}
-            />
-          </Card>
-        })}
+        <LeftNav ref="leftNavChildren" style={styles.leftmenu}>
+          <MenuItem index={0} leftIcon={<TrackIcon />} onClick={this._handleContent.bind(this,0)} >Top tracks</MenuItem>
+          <MenuItem index={1} leftIcon={<AlbumIcon />} onClick={this._handleContent.bind(this,1)} >Top albums</MenuItem>
+          <MenuItem index={2} leftIcon={<ArtistIcon />} onClick={this._handleContent.bind(this,2)} >Top artists</MenuItem>
+        </LeftNav>
+        <div style={styles.content}>
+         {content}
+        </div>
       </div>
     );
   },
 
-  _handleTouchTap() {
-    this.refs.superSecretPasswordDialog.show();
+  _handleContent(index) {
+    let keyArray = ['tracks', 'albums', 'artists'];
+    this.setState({method: keyArray[index]});
   },
 
 });
+
+const styles = {
+  leftmenu: {
+    width: '240px',
+  },
+  content: {
+    paddingLeft: '240px',
+  },
+}
 
 module.exports = Main;
