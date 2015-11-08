@@ -1,14 +1,16 @@
 import React from 'react';
 import CircularProgress from 'material-ui/lib/circular-progress';
-import Card from 'material-ui/lib/card/card';
-import CardHeader from 'material-ui/lib/card/card-header';
+import Avatar from 'material-ui/lib/avatar'
+import List from 'material-ui/lib/lists/list'
+import ListItem from 'material-ui/lib/lists/list-item'
+import ListDivider from 'material-ui/lib/lists/list-divider'
 import {BASE_URL, DEFAULT_USER, DEFAULT_LIMIT, DEFAULT_METHOD} from './api';
 
-const Tracks = React.createClass({
+const Albums = React.createClass({
 
   getInitialState () {
     return {
-      tracks: [],
+      artists: [],
       loaded: false,
     };
   },
@@ -18,13 +20,13 @@ const Tracks = React.createClass({
   },
 
   fetchDate() {
-      let url = BASE_URL + '&user=' + DEFAULT_USER + '&method=' + DEFAULT_METHOD;
+      let url = BASE_URL + '&user=' + DEFAULT_USER + '&method=' + 'user.gettopartists';
       fetch(url).then((response) => {
         return response.json()
       }).then((json) => {
         console.log('parsed json', json)
         this.setState({
-          tracks: json.recenttracks.track,
+          artists: json.topartists.artist,
           loaded: true,
         });
       }).catch((ex) => {
@@ -51,21 +53,26 @@ const Tracks = React.createClass({
       return this.renderLoadingView();
     }
 
-    let datas = this.state.tracks;
+    let datas = this.state.artists;
     return (
       <div>
-        {datas.map(d => <Card>
-            <CardHeader
-              title={d.name}
-              subtitle={d.artist['#text']}
-              avatar={d.image[2]['#text']}
-            />
-          </Card>
-        )}
+        <List subheader="Overall">
+          {datas.map(d => <ListItem
+            leftAvatar={<Avatar src={d.image[3]['#text']} />}
+            primaryText={d.name}
+            secondaryText={
+              <p>
+                <span>Playcount -- </span>
+                {d.playcount}
+              </p>
+            }
+            secondaryTextLines={2} />
+          )}
+        </List>
       </div>
     )
   },
 });
 
-module.exports = Tracks;
+module.exports = Albums;
 

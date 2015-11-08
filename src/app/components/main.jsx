@@ -1,19 +1,16 @@
 import React from 'react';
-const RaisedButton = require('material-ui/lib/raised-button');
-const LeftNav = require('material-ui/lib/left-nav');
-const MenuItem = require('material-ui/lib/menus/menu-item');
-const MenuDivider = require('material-ui/lib/menus/menu-divider');
+import LeftNav from 'material-ui/lib/left-nav';
+import MenuItem from 'material-ui/lib/menus/menu-item';
 import ArtistIcon from 'material-ui/lib/svg-icons/social/person';
 import AlbumIcon from 'material-ui/lib/svg-icons/device/wallpaper';
 import TrackIcon from 'material-ui/lib/svg-icons/av/queue-music';
-const ArrowDropRight = require('material-ui/lib/svg-icons/av/play-arrow');
 import IconButton from 'material-ui/lib/icon-button'
-const ThemeManager = require('material-ui/lib/styles/theme-manager');
-const LightRawTheme = require('material-ui/lib/styles/raw-themes/light-raw-theme');
-const Colors = require('material-ui/lib/styles/colors');
-
+import ThemeManager from 'material-ui/lib/styles/theme-manager';
+import LightRawTheme from 'material-ui/lib/styles/raw-themes/light-raw-theme';
+import Colors from 'material-ui/lib/styles/colors';
 import TracksModule from './tracks'
 import AlbumsModule from './albums'
+import ArtistsModule from './artists'
 
 const Main = React.createClass({
 
@@ -49,6 +46,9 @@ const Main = React.createClass({
     }
     else if(this.state.method === 'albums'){
       content = <AlbumsModule />
+    }
+    else if(this.state.method === 'artists'){
+      content = <ArtistsModule />
     }
 
     return (

@@ -54,27 +54,17 @@ const Albums = React.createClass({
     let datas = this.state.albums;
     return (
       <div>
-        <GridList 
-          cols={6}
-          >
-          {
-            datas.map(tile => <GridTile
-              title={tile.name}
-              subtitle={<span><b>{tile.artist['name']}</b></span>}
-              ><img src={tile.image[3]['#text']} /></GridTile>
-              )
-          }
+        <GridList cols={6}>
+          {datas.map(tile => <GridTile
+            title={tile.name}
+            subtitle={<span><b>{tile.artist['name']}</b></span>}
+            ><img src={tile.image[3]['#text']} /></GridTile>
+          )}
         </GridList>
       </div>
     )
   },
 });
-
-const styles = {
-  content: {
-    width: '100%',
-  },
-}
 
 module.exports = Albums;
 
