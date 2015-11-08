@@ -1,9 +1,9 @@
 import React from 'react';
-import CircularProgress from 'material-ui/lib/circular-progress';
 import Avatar from 'material-ui/lib/avatar'
 import List from 'material-ui/lib/lists/list'
 import ListItem from 'material-ui/lib/lists/list-item'
 import ListDivider from 'material-ui/lib/lists/list-divider'
+import Loading from './loading'
 import {BASE_URL, DEFAULT_USER, DEFAULT_LIMIT, DEFAULT_METHOD} from './api';
 
 const Albums = React.createClass({
@@ -34,23 +34,9 @@ const Albums = React.createClass({
       })
   },
 
-  renderLoadingView() {
-
-    let containerStyle = {
-      textAlign: 'center',
-      paddingTop: '200px',
-    };
-
-    return (
-      <div style={containerStyle}>
-        <CircularProgress mode="indeterminate" />
-      </div>
-    )
-  },
-
   render() {
     if (!this.state.loaded) {
-      return this.renderLoadingView();
+      return <Loading />;
     }
 
     let datas = this.state.artists;

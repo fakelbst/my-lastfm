@@ -1,7 +1,7 @@
 import React from 'react';
-import CircularProgress from 'material-ui/lib/circular-progress';
 import GridList from 'material-ui/lib/grid-list/grid-list'
 import GridTile from 'material-ui/lib/grid-list/grid-tile'
+import Loading from './loading'
 import {BASE_URL, DEFAULT_USER, DEFAULT_LIMIT, DEFAULT_METHOD} from './api';
 
 const Albums = React.createClass({
@@ -32,23 +32,9 @@ const Albums = React.createClass({
       })
   },
 
-  renderLoadingView() {
-
-    let containerStyle = {
-      textAlign: 'center',
-      paddingTop: '200px',
-    };
-
-    return (
-      <div style={containerStyle}>
-        <CircularProgress mode="indeterminate" />
-      </div>
-    )
-  },
-
   render() {
     if (!this.state.loaded) {
-      return this.renderLoadingView();
+      return <Loading />;
     }
 
     let datas = this.state.albums;

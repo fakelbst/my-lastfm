@@ -1,7 +1,7 @@
 import React from 'react';
-import CircularProgress from 'material-ui/lib/circular-progress';
 import Card from 'material-ui/lib/card/card';
 import CardHeader from 'material-ui/lib/card/card-header';
+import Loading from './loading'
 import {BASE_URL, DEFAULT_USER, DEFAULT_LIMIT, DEFAULT_METHOD} from './api';
 
 const Tracks = React.createClass({
@@ -32,23 +32,9 @@ const Tracks = React.createClass({
       })
   },
 
-  renderLoadingView() {
-
-    let containerStyle = {
-      textAlign: 'center',
-      paddingTop: '200px',
-    };
-
-    return (
-      <div style={containerStyle}>
-        <CircularProgress mode="indeterminate" />
-      </div>
-    )
-  },
-
   render() {
     if (!this.state.loaded) {
-      return this.renderLoadingView();
+      return <Loading />;
     }
 
     let datas = this.state.tracks;
