@@ -20,21 +20,22 @@ const Albums = React.createClass({
   },
 
   fetchDate() {
-      let url = BASE_URL + '&user=' + DEFAULT_USER + '&method=' + 'user.gettopartists';
-      fetch(url).then((response) => {
-        return response.json()
-      }).then((json) => {
-        console.log('parsed json', json)
-        this.setState({
-          artists: json.topartists.artist,
-          loaded: true,
-        });
-      }).catch((ex) => {
-        console.log('parsing failed', ex)
-      })
+    let url = BASE_URL + '&user=' + DEFAULT_USER + '&method=' + 'user.gettopartists' + '&period=' + this.props.period;
+    fetch(url).then((response) => {
+      return response.json()
+    }).then((json) => {
+      console.log('parsed json', json)
+      this.setState({
+        artists: json.topartists.artist,
+        loaded: true,
+      });
+    }).catch((ex) => {
+      console.log('parsing failed', ex)
+    })
   },
 
   render() {
+    console.log(11111111);
     if (!this.state.loaded) {
       return <Loading />;
     }
@@ -42,7 +43,7 @@ const Albums = React.createClass({
     let datas = this.state.artists;
     return (
       <div>
-        <List subheader="Overall">
+        <List>
           {datas.map(d => <ListItem
             leftAvatar={<Avatar src={d.image[3]['#text']} />}
             primaryText={d.name}
