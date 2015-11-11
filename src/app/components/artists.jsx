@@ -19,8 +19,9 @@ const Albums = React.createClass({
     this.fetchDate();
   },
 
-  fetchDate() {
-    let url = BASE_URL + '&user=' + DEFAULT_USER + '&method=' + 'user.gettopartists' + '&period=' + this.props.period;
+  fetchDate(p) {
+    let period = p || this.props.period;
+    let url = BASE_URL + '&user=' + DEFAULT_USER + '&method=' + 'user.gettopartists' + '&period=' + period;
     fetch(url).then((response) => {
       return response.json()
     }).then((json) => {
@@ -34,8 +35,11 @@ const Albums = React.createClass({
     })
   },
 
+  componentWillReceiveProps(par) {
+    this.fetchDate(par.period);
+  },
+
   render() {
-    console.log(11111111);
     if (!this.state.loaded) {
       return <Loading />;
     }

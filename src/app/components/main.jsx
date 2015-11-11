@@ -14,6 +14,15 @@ import TracksModule from './tracks'
 import AlbumsModule from './albums'
 import ArtistsModule from './artists'
 
+const periodItems = [
+  { payload: '1', text: 'Overall' },
+  { payload: '2', text: '12 months' },
+  { payload: '3', text: '6 months' },
+  { payload: '4', text: '3 months' },
+  { payload: '5', text: '1 months' },
+  { payload: '6', text: '7 days' },
+];
+
 const Main = React.createClass({
 
   childContextTypes: {
@@ -54,15 +63,6 @@ const Main = React.createClass({
       content = <ArtistsModule period={this.state.period} />
     }
 
-    let period = [
-      { payload: '1', text: 'Overall' },
-      { payload: '2', text: '12 months' },
-      { payload: '3', text: '6 months' },
-      { payload: '4', text: '3 months' },
-      { payload: '5', text: '1 months' },
-      { payload: '6', text: '7 days' },
-    ];
-
     return (
       <div>
         <LeftNav ref="leftNavChildren" style={styles.leftmenu}>
@@ -73,7 +73,7 @@ const Main = React.createClass({
         <div style={styles.content}>
           <Toolbar style={styles.toolbar}>
             <ToolbarGroup key={0} float="left">
-              <DropDownMenu menuItems={period} onChange={this._handlePeriod}/>
+              <DropDownMenu menuItems={periodItems} onChange={this._handlePeriod}/>
             </ToolbarGroup>
           </Toolbar>
           {content}
@@ -83,25 +83,24 @@ const Main = React.createClass({
   },
 
   _handlePeriod(e, index, menuItem) {
-    console.log(e, index, menuItem);
     let value = '';
-    switch (index) {
-      case 0:
+    switch (menuItem.payload) {
+      case '1':
         value = 'overall';
         break;
-      case 1:
+      case '2':
         value = '12month';
         break;
-      case 2:
+      case '3':
         value = '6month';
         break;
-      case 3:
+      case '4':
         value = '3month';
         break;
-      case 4:
+      case '5':
         value = '1month';
         break;
-      case 5:
+      case '6':
         value = '7day';
         break;
     }
