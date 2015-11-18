@@ -17,19 +17,24 @@ const Tracks = React.createClass({
     this.fetchDate();
   },
 
-  fetchDate() {
-      let url = BASE_URL + '&user=' + DEFAULT_USER + '&method=' + DEFAULT_METHOD;
-      fetch(url).then((response) => {
-        return response.json()
-      }).then((json) => {
-        console.log('parsed json', json)
-        this.setState({
-          tracks: json.recenttracks.track,
-          loaded: true,
-        });
-      }).catch((ex) => {
-        console.log('parsing failed', ex)
-      })
+  fetchDate(p) {
+    let period = p || this.props.period;
+    let url = BASE_URL + '&user=' + DEFAULT_USER + '&method=' + 'user.gettoptracks' + '&period=' + period;
+    fetch(url).then((response) => {
+      return response.json()
+    }).then((json) => {
+      console.log('parsed json', json)
+      this.setState({
+        tracks: json.toptracks.track,
+        loaded: true,
+      });
+    }).catch((ex) => {
+      console.log('parsing failed', ex)
+    })
+  },
+
+  componentWillReceiveProps(par) {
+    this.fetchDate(par.period);
   },
 
   render() {
@@ -43,7 +48,7 @@ const Tracks = React.createClass({
         {datas.map(d => <Card>
             <CardHeader
               title={d.name}
-              subtitle={d.artist['#text']}
+              subtitle={d.artist['name']}
               avatar={d.image[2]['#text']}
             />
           </Card>

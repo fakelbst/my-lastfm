@@ -17,19 +17,24 @@ const Albums = React.createClass({
     this.fetchDate();
   },
 
-  fetchDate() {
-      let url = BASE_URL + '&user=' + DEFAULT_USER + '&method=' + 'user.gettopalbums';
-      fetch(url).then((response) => {
-        return response.json()
-      }).then((json) => {
-        console.log('parsed json', json)
-        this.setState({
-          albums: json.topalbums.album,
-          loaded: true,
-        });
-      }).catch((ex) => {
-        console.log('parsing failed', ex)
-      })
+  fetchDate(p) {
+    let period = p || this.props.period;
+    let url = BASE_URL + '&user=' + DEFAULT_USER + '&method=' + 'user.gettopalbums' + '&period=' + period;
+    fetch(url).then((response) => {
+      return response.json()
+    }).then((json) => {
+      console.log('parsed json', json)
+      this.setState({
+        albums: json.topalbums.album,
+        loaded: true,
+      });
+    }).catch((ex) => {
+      console.log('parsing failed', ex)
+    })
+  },
+
+  componentWillReceiveProps(par) {
+    this.fetchDate(par.period);
   },
 
   render() {
