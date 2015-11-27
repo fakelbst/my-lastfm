@@ -13,6 +13,7 @@ import Colors from 'material-ui/lib/styles/colors';
 import TracksModule from './tracks'
 import AlbumsModule from './albums'
 import ArtistsModule from './artists'
+import RecentTracksModule from './recent-tracks'
 
 const periodItems = [
   { payload: '1', text: 'Overall' },
@@ -54,13 +55,37 @@ const Main = React.createClass({
 
     let content = <TracksModule period={this.state.period}/>;
     if(this.state.method === 'tracks'){
-      content = <TracksModule period={this.state.period} />;
+      content = <div>
+        <Toolbar style={styles.toolbar}>
+          <ToolbarGroup key={0} float="left">
+            <DropDownMenu menuItems={periodItems} onChange={this._handlePeriod}/>
+          </ToolbarGroup>
+        </Toolbar>
+        <TracksModule period={this.state.period} />;
+      </div>
     }
     else if(this.state.method === 'albums'){
-      content = <AlbumsModule period={this.state.period} />
+      content = <div>
+        <Toolbar style={styles.toolbar}>
+          <ToolbarGroup key={0} float="left">
+            <DropDownMenu menuItems={periodItems} onChange={this._handlePeriod}/>
+          </ToolbarGroup>
+        </Toolbar>
+        <AlbumsModule period={this.state.period} />
+      </div>
     }
     else if(this.state.method === 'artists'){
-      content = <ArtistsModule period={this.state.period} />
+      content = <div>
+        <Toolbar style={styles.toolbar}>
+          <ToolbarGroup key={0} float="left">
+            <DropDownMenu menuItems={periodItems} onChange={this._handlePeriod}/>
+          </ToolbarGroup>
+        </Toolbar>
+        <ArtistsModule period={this.state.period} />
+      </div>
+    }
+    else if(this.state.method === 'rtracks'){
+      content = <RecentTracksModule />
     }
 
     return (
@@ -69,13 +94,9 @@ const Main = React.createClass({
           <MenuItem index={0} leftIcon={<TrackIcon />} onClick={this._handleContent.bind(this,0)} >Top tracks</MenuItem>
           <MenuItem index={1} leftIcon={<AlbumIcon />} onClick={this._handleContent.bind(this,1)} >Top albums</MenuItem>
           <MenuItem index={2} leftIcon={<ArtistIcon />} onClick={this._handleContent.bind(this,2)} >Top artists</MenuItem>
+          <MenuItem index={2} leftIcon={<TrackIcon />} onClick={this._handleContent.bind(this,3)} >Rcent tracks</MenuItem>
         </LeftNav>
         <div style={styles.content}>
-          <Toolbar style={styles.toolbar}>
-            <ToolbarGroup key={0} float="left">
-              <DropDownMenu menuItems={periodItems} onChange={this._handlePeriod}/>
-            </ToolbarGroup>
-          </Toolbar>
           {content}
         </div>
       </div>
@@ -108,7 +129,7 @@ const Main = React.createClass({
   },
 
   _handleContent(index) {
-    let keyArray = ['tracks', 'albums', 'artists'];
+    let keyArray = ['tracks', 'albums', 'artists', 'rtracks'];
     this.setState({method: keyArray[index]});
   },
 
