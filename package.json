@@ -20,11 +20,11 @@
     "eslint-loader": "^1.0.0",
     "eslint-plugin-react": "^3.2.2",
     "html-webpack-plugin": "^1.6.1",
+    "isomorphic-fetch": "^2.2.0",
     "react-hot-loader": "^1.2.8",
     "transfer-webpack-plugin": "^0.1.4",
     "webpack": "^1.11.0",
-    "webpack-dev-server": "^1.10.1",
-    "whatwg-fetch": "^0.10.1"
+    "webpack-dev-server": "^1.10.1"
   },
   "dependencies": {
     "exports-loader": "^0.6.2",
@@ -36,6 +36,10 @@
     "react-addons-transition-group": "^0.14.0",
     "react-addons-update": "^0.14.0",
     "react-dom": "^0.14.0",
-    "react-tap-event-plugin": "^0.2.1"
+    "react-redux": "^4.0.0",
+    "react-tap-event-plugin": "^0.2.1",
+    "redux": "^3.0.4",
+    "redux-logger": "^2.0.4",
+    "redux-thunk": "^1.0.0"
   }
 }

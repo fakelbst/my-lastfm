@@ -9,7 +9,7 @@ var config = {
   entry: [
     'webpack/hot/dev-server',
     'webpack/hot/only-dev-server',
-    path.join(__dirname, '/src/app/app.jsx')
+    path.join(__dirname, '/src/app/app.js')
   ],
   //Config options on how to interpret requires imports
   resolve: {
@@ -30,30 +30,24 @@ var config = {
     filename: 'app.js'
   },
   plugins: [
-    //Enables Hot Modules Replacement
     new webpack.HotModuleReplacementPlugin(),
-    //Allows error warnings but does not stop compiling. Will remove when eslint is added
     new webpack.NoErrorsPlugin(),
     //Moves files
     new TransferWebpackPlugin([
       {from: 'www'}
-    ], path.resolve(__dirname, "src")),
-    new webpack.ProvidePlugin({
-      'Promise': 'es6-promise',
-      'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'
-    })
+    ], path.resolve(__dirname, "src"))
   ],
   module: {
     //Loaders to interpret non-vanilla javascript code as well as most other extensions including images and text.
-    preLoaders: [
-      {
-        //Eslint loader
-        test: /\.(js|jsx)$/,
-        loader: 'eslint-loader',
-        include: [path.resolve(__dirname, "src/app")],
-        exclude: [nodeModulesPath]
-      },
-    ],
+    //preLoaders: [
+    //  {
+    //    //Eslint loader
+    //    test: /\.(js|jsx)$/,
+    //    loader: 'eslint-loader',
+    //    include: [path.resolve(__dirname, "src/app")],
+    //    exclude: [nodeModulesPath]
+    //  },
+    //],
     loaders: [
       {
         //React-hot loader and
