@@ -5,7 +5,7 @@ function user(state = 'fakelbst', action){
   switch (action.type) {
     case SET_USER:
       return action.user
-    default: 
+    default:
       return state
   }
 }
@@ -14,7 +14,7 @@ function method(state = METHOD_TOP_TRACKS, action){
   switch (action.type) {
     case 'SET_METHOD':
       return action.method
-    default: 
+    default:
       return state
   }
 }
@@ -39,7 +39,6 @@ function datas(state = {
         items: action.datas
       })
     case RECEIVE_TOP_TRACKS:
-      console.log(action);
       return Object.assign({}, state, {
         isFetching: false,
         items: action.datas

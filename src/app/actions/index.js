@@ -25,7 +25,6 @@ export function setMethod(method){
 }
 
 function receiveTopAlbums(user, json){
-  console.log(json);
   return {
     type: RECEIVE_TOP_ALBUMS,
     user: user,
@@ -77,21 +76,25 @@ function fetchTopTracks(user, method) {
         switch (method){
           case METHOD_TOP_ALBUMS:
             dispatch(receiveTopAlbums(user, json))
+            break
           case METHOD_TOP_ARTISTS:
             dispatch(receiveTopArtists(user, json))
+            break
           case METHOD_TOP_TRACKS:
             dispatch(receiveTopTracks(user, json))
+            break
           case METHOD_RECENT_TRACKS:
             dispatch(receiveRecentTracks(user, json))
-          default: 
+            break
+          default:
             dispatch(receiveTopTracks(user, json))
+            break
         }
       })
   }
 }
 
 export function fetchDatas(user, method) {
-  console.log(user, method);
   return (dispatch) => {
     return dispatch(fetchTopTracks(user, method))
   }
