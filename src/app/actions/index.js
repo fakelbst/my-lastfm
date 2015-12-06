@@ -1,5 +1,8 @@
 import fetch from 'isomorphic-fetch'
 
+export const SET_USER = 'SET_USER'
+export const SET_METHOD = 'SET_METHOD'
+export const SET_PERIOD = 'SET_PERIOD'
 export const REQUEST_DATAS = 'REQUEST_DATAS'
 export const RECEIVE_TOP_ARTISTS = 'RECEIVE_TOP_ARTISTS'
 export const RECEIVE_TOP_TRACKS = 'RECEIVE_TOP_TRACKS'
@@ -12,15 +15,22 @@ export const METHOD_RECENT_TRACKS = 'user.getrecenttracks'
 
 export function setUser(user){
   return {
-    type: 'SET_USER',
+    type: SET_USER,
     user
   }
 }
 
 export function setMethod(method){
   return {
-    type: 'SET_METHOD',
+    type: SET_METHOD,
     method
+  }
+}
+
+export function setPeriod(period){
+  return {
+    type: SET_PERIOD,
+    period
   }
 }
 
@@ -67,10 +77,10 @@ function requestDatas(user) {
   }
 }
 
-function fetchTopTracks(user, method) {
+function toFetch(user, method, period='') {
   return dispatch => {
     dispatch(requestDatas(user, method))
-    return fetch(`http://ws.audioscrobbler.com/2.0/?format=json&api_key=4dff88a0423651b3570253b10b745b2c&user=${user}&method=${method}`)
+    return fetch(`http://ws.audioscrobbler.com/2.0/?format=json&api_key=4dff88a0423651b3570253b10b745b2c&user=${user}&method=${method}&period=${period}`)
       .then(response => response.json())
       .then(json => {
         switch (method){
@@ -94,8 +104,8 @@ function fetchTopTracks(user, method) {
   }
 }
 
-export function fetchDatas(user, method) {
+export function fetchDatas(user, method, period='') {
   return (dispatch) => {
-    return dispatch(fetchTopTracks(user, method))
+    return dispatch(toFetch(user, method, period))
   }
 }

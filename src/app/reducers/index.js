@@ -1,10 +1,19 @@
 import { combineReducers } from 'redux'
-import { SET_USER, REQUEST_DATAS, RECEIVE_TOP_ARTISTS, RECEIVE_TOP_TRACKS, RECEIVE_TOP_ALBUMS, RECEIVE_RECENT_TRACKS, METHOD_TOP_TRACKS } from '../actions'
+import { SET_USER, SET_PERIOD, REQUEST_DATAS, RECEIVE_TOP_ARTISTS, RECEIVE_TOP_TRACKS, RECEIVE_TOP_ALBUMS, RECEIVE_RECENT_TRACKS, METHOD_TOP_TRACKS } from '../actions'
 
 function user(state = 'fakelbst', action){
   switch (action.type) {
     case SET_USER:
       return action.user
+    default:
+      return state
+  }
+}
+
+function period(state = 'overall', action){
+  switch (action.type) {
+    case SET_PERIOD:
+      return action.period
     default:
       return state
   }
@@ -55,7 +64,6 @@ function datas(state = {
 
 function datasByMethods(state = { }, action) {
   switch (action.type) {
-    case REQUEST_DATAS:
     case RECEIVE_TOP_ARTISTS:
     case RECEIVE_TOP_TRACKS:
     case RECEIVE_TOP_ALBUMS:
@@ -71,6 +79,7 @@ function datasByMethods(state = { }, action) {
 const rootReducer = combineReducers({
   user,
   method,
+  period,
   datasByMethods
 })
 

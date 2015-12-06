@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { fetchDatas, setMethod, METHOD_TOP_ARTISTS, METHOD_TOP_TRACKS, METHOD_TOP_ALBUMS, METHOD_RECENT_TRACKS } from '../actions/'
+import { fetchDatas, setMethod, setPeriod, METHOD_TOP_ARTISTS, METHOD_TOP_TRACKS, METHOD_TOP_ALBUMS, METHOD_RECENT_TRACKS } from '../actions/'
 import LeftNav from 'material-ui/lib/left-nav'
 import MenuItem from 'material-ui/lib/menus/menu-item'
 import ArtistIcon from 'material-ui/lib/svg-icons/social/person'
@@ -31,45 +31,20 @@ const periodItems = [
 class Main extends Component {
   constructor(props) {
     super(props)
-    // this.handleChange = this.handleChange.bind(this)
-    // this.handleRefreshClick = this.handleRefreshClick.bind(this)
+    this.handlePeriod = this.handlePeriod.bind(this)
   }
 
-  // childContextTypes: {
-  //   muiTheme: React.PropTypes.object,
-  // }
-
-  // getInitialState () {
-  //   return {
-  //     period: 'overall',
-  //     muiTheme: ThemeManager.getMuiTheme(LightRawTheme),
-  //   };
-  // }
-
-  // getChildContext() {
-  //   return {
-  //     muiTheme: this.state.muiTheme,
-  //   };
-  // }
-
   componentDidMount() {
-    const { dispatch, user, method } = this.props
-    dispatch(fetchDatas(user, method))
+    const { dispatch, user, method, period } = this.props
+    dispatch(fetchDatas(user, method, period))
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.method !== this.props.method) {
-      const { dispatch, user, method } = nextProps
-      dispatch(fetchDatas(user, method))
+    if (nextProps.method !== this.props.method || nextProps.period !== this.props.period) {
+      const { dispatch, user, method, period } = nextProps
+      dispatch(fetchDatas(user, method, period))
     }
   }
-  // componentWillMount() {
-  //   let newMuiTheme = ThemeManager.modifyRawThemePalette(this.state.muiTheme, {
-  //     accent1Color: Colors.deepOrange500,
-  //   });
-
-  //   this.setState({muiTheme: newMuiTheme});
-  // },
 
   render() {
     const { user, method, datas, isFetching } = this.props
@@ -99,14 +74,14 @@ class Main extends Component {
         content = <div>
           <Toolbar style={styles.toolbar}>
             <ToolbarGroup key={0} float="left">
-              <DropDownMenu menuItems={periodItems} onChange={this._handlePeriod}/>
+              <DropDownMenu menuItems={periodItems} onChange={this.handlePeriod}/>
             </ToolbarGroup>
           </Toolbar>
           {main}
         </div>
       }
     }
-    
+
     return (
       <div>
         <LeftNav ref="leftNavChildren" style={styles.leftmenu}>
@@ -122,29 +97,29 @@ class Main extends Component {
     );
   }
 
-  _handlePeriod(e, index, menuItem) {
-    let value = '';
+  handlePeriod(e, index, menuItem) {
+    let value = ''
     switch (menuItem.payload) {
       case '1':
-        value = 'overall';
-        break;
+        value = 'overall'
+        break
       case '2':
-        value = '12month';
-        break;
+        value = '12month'
+        break
       case '3':
-        value = '6month';
-        break;
+        value = '6month'
+        break
       case '4':
-        value = '3month';
-        break;
+        value = '3month'
+        break
       case '5':
-        value = '1month';
-        break;
+        value = '1month'
+        break
       case '6':
-        value = '7day';
-        break;
+        value = '7day'
+        break
     }
-    this.setState({period: value});
+    this.props.dispatch(setPeriod(value))
   }
 
   handleContent(index) {
@@ -173,7 +148,7 @@ const styles = {
 }
 
 function mapStateToProps(state) { 
-  const { user, method, datasByMethods } = state
+  const { user, method, period, datasByMethods } = state
   const {
     isFetching,
     items: datas
@@ -185,6 +160,7 @@ function mapStateToProps(state) {
   return {
     user,
     method,
+    period,
     datas,
     isFetching,
   }
