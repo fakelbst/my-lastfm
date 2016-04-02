@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { fetchDatas, setMethod, setPeriod, METHOD_TOP_ARTISTS, METHOD_TOP_TRACKS, METHOD_TOP_ALBUMS, METHOD_RECENT_TRACKS } from '../actions/'
+import { fetchDatas, getUserInfo, setMethod, setPeriod, METHOD_TOP_ARTISTS, METHOD_TOP_TRACKS, METHOD_TOP_ALBUMS, METHOD_RECENT_TRACKS } from '../actions/'
 import LeftNav from 'material-ui/lib/left-nav'
 import MenuItem from 'material-ui/lib/menus/menu-item'
 import ArtistIcon from 'material-ui/lib/svg-icons/social/person'
@@ -18,6 +18,7 @@ import TracksModule from './tracks'
 import AlbumsModule from './albums'
 import ArtistsModule from './artists'
 import RecentTracksModule from './recent-tracks'
+import HeaderInfos from './header'
 
 const periodItems = [
   { payload: '1', text: 'Overall' },
@@ -37,6 +38,7 @@ class Main extends Component {
   componentDidMount() {
     const { dispatch, user, method, period } = this.props
     dispatch(fetchDatas(user, method, period))
+    dispatch(getUserInfo(user))
   }
 
   componentWillReceiveProps(nextProps) {
@@ -85,6 +87,7 @@ class Main extends Component {
     return (
       <div>
         <LeftNav ref="leftNavChildren" style={styles.leftmenu}>
+          <HeaderInfos name={user.name} avatar={user.avatar}></HeaderInfos>
           <MenuItem index={0} leftIcon={<TrackIcon />} onClick={this.handleContent.bind(this,0)} >Top tracks</MenuItem>
           <MenuItem index={1} leftIcon={<AlbumIcon />} onClick={this.handleContent.bind(this,1)} >Top albums</MenuItem>
           <MenuItem index={2} leftIcon={<ArtistIcon />} onClick={this.handleContent.bind(this,2)} >Top artists</MenuItem>
@@ -147,7 +150,7 @@ const styles = {
   },
 }
 
-function mapStateToProps(state) { 
+function mapStateToProps(state) {
   const { user, method, period, datasByMethods } = state
   const {
     isFetching,
@@ -167,4 +170,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(Main);
-

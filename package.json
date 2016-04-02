@@ -21,6 +21,7 @@
     "eslint-plugin-react": "^3.2.2",
     "html-webpack-plugin": "^1.6.1",
     "isomorphic-fetch": "^2.2.0",
+    "material-ui": "^0.13.4",
     "react-hot-loader": "^1.2.8",
     "transfer-webpack-plugin": "^0.1.4",
     "webpack": "^1.11.0",

@@ -1,8 +1,12 @@
 import fetch from 'isomorphic-fetch'
+import {BASE_URL, API_KEY } from '../components/api'
 
 export const SET_USER = 'SET_USER'
 export const SET_METHOD = 'SET_METHOD'
 export const SET_PERIOD = 'SET_PERIOD'
+
+export const REQUEST_USER_INFO = 'REQUEST_USER_INFO'
+export const RECEIVE_USER_INFO = 'RECEIVE_USER_INFO'
 export const REQUEST_DATAS = 'REQUEST_DATAS'
 export const RECEIVE_TOP_ARTISTS = 'RECEIVE_TOP_ARTISTS'
 export const RECEIVE_TOP_TRACKS = 'RECEIVE_TOP_TRACKS'
@@ -16,7 +20,8 @@ export const METHOD_RECENT_TRACKS = 'user.getrecenttracks'
 export function setUser(user){
   return {
     type: SET_USER,
-    user
+    name: user.name,
+    avatar: user.avatar
   }
 }
 
@@ -34,10 +39,36 @@ export function setPeriod(period){
   }
 }
 
+function requestUserInfo(user){
+  return {
+    type: REQUEST_USER_INFO,
+    user
+  }
+}
+
+function fetchUserInfos(user){
+  return dispatch => {
+    dispatch(requestUserInfo(user))
+    return fetch(BASE_URL + '&api_key=' + API_KEY + '&method=user.getinfo&user=' + user.name)
+      .then(response => response.json())
+      .then(json => {
+        dispatch(receiveUserInfo(json))
+      })
+  }
+}
+
+function receiveUserInfo(json){
+  return {
+    type: RECEIVE_USER_INFO,
+    avatar: json.user.image[3]['#text'],
+    name: json.user.name
+  }
+}
+
 function receiveTopAlbums(user, json){
   return {
     type: RECEIVE_TOP_ALBUMS,
-    user: user,
+    user,
     method: METHOD_TOP_ALBUMS,
     datas: json.topalbums.album
   }
@@ -46,7 +77,7 @@ function receiveTopAlbums(user, json){
 function receiveTopTracks(user, json){
   return {
     type: RECEIVE_TOP_TRACKS,
-    user: user,
+    user,
     method: METHOD_TOP_TRACKS,
     datas: json.toptracks.track
   }
@@ -55,7 +86,7 @@ function receiveTopTracks(user, json){
 function receiveRecentTracks(user, json){
   return {
     type: RECEIVE_RECENT_TRACKS,
-    user: user,
+    user,
     method: METHOD_RECENT_TRACKS,
     datas: json.recenttracks.track
   }
@@ -64,8 +95,8 @@ function receiveRecentTracks(user, json){
 function receiveTopArtists(user, json){
   return {
     type: RECEIVE_TOP_ARTISTS,
-    user: user,
-    method: 'user.gettopartists',
+    user,
+    method: METHOD_TOP_ARTISTS,
     datas: json.topartists.artist
   }
 }
@@ -106,6 +137,13 @@ function toFetch(user, method, period='') {
 
 export function fetchDatas(user, method, period='') {
   return (dispatch) => {
-    return dispatch(toFetch(user, method, period))
+    return dispatch(toFetch(user.name, method, period))
   }
 }
+
+export function getUserInfo(user){
+  return (dispatch) => {
+    return dispatch(fetchUserInfos(user))
+  }
+}
+

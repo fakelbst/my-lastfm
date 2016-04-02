@@ -1,10 +1,14 @@
 import { combineReducers } from 'redux'
-import { SET_USER, SET_PERIOD, REQUEST_DATAS, RECEIVE_TOP_ARTISTS, RECEIVE_TOP_TRACKS, RECEIVE_TOP_ALBUMS, RECEIVE_RECENT_TRACKS, METHOD_TOP_TRACKS } from '../actions'
+import { SET_USER, RECEIVE_USER_INFO, SET_PERIOD, REQUEST_DATAS, RECEIVE_TOP_ARTISTS, RECEIVE_TOP_TRACKS, RECEIVE_TOP_ALBUMS, RECEIVE_RECENT_TRACKS, METHOD_TOP_TRACKS } from '../actions'
 
-function user(state = 'fakelbst', action){
+function user(state = {name: 'fakelbst', avatar: ''}, action){
   switch (action.type) {
     case SET_USER:
-      return action.user
+    case RECEIVE_USER_INFO:
+      return {
+        name: action.name,
+        avatar: action.avatar
+      }
     default:
       return state
   }
